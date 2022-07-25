@@ -1,6 +1,28 @@
 {
   "dependencies": {
+    "eslint": "^8.0.1",
     "ethers": "^5.6.9",
     "yargs": "^17.5.1"
+  },
+  "scripts": {
+    "lint": "yarn run eslint explorer --fix"
+  },
+  "name": "explorer",
+  "version": "1.0.0",
+  "description": "A command line block explorer",
+  "main": "index.js",
+  "author": "hughes-ch <contact@chrishughesdev.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-promise": "^6.0.0"
+  },
+  "eslintConfig": {
+    "rules": {
+      "space-before-function-paren": "off",
+      "comma-dangle": "off"
+    }
   }
 }

@@ -1,16 +1,16 @@
 class TransferReport {
   constructor(transactionList) {
-    this.totalEtherTransfer = this.getTotalEtherTransfer(transactionList);
+    this.totalEtherTransfer = this.getTotalEtherTransfer(transactionList)
   }
 
   toString() {
-    return `Total Ether Transfer: ${this.totalEtherTransfer}`;
+    return `Total Ether Transfer: ${this.totalEtherTransfer}`
   }
 
   getTotalEtherTransfer(transactionList) {
-    const sum = (prev, curr) => prev.value.add(curr.value);
-    return transactionList.reduce(sum, 0);
+    const sum = (prev, curr) => prev.value.add(curr.value)
+    return transactionList.reduce(sum, 0)
   }
 }
 
-module.exports = TransferReport;
+module.exports = TransferReport
