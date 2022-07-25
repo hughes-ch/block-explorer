@@ -18,11 +18,5 @@
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-promise": "^6.0.0"
-  },
-  "eslintConfig": {
-    "rules": {
-      "space-before-function-paren": "off",
-      "comma-dangle": "off"
-    }
   }
 }
