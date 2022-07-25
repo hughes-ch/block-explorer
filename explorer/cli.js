@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const yargs = require("yargs/yargs");
 const { hideBin } = require("yargs/helpers");
+const { fetchTransferReport } = require("./helpers")
 
 const argv = yargs(hideBin(process.argv))
       .options({
@@ -15,8 +16,10 @@ const argv = yargs(hideBin(process.argv))
       })
       .argv
 
-if (argv.start && argv.end) {
-  console.log(`Exploring blocks ${argv.start} to ${argv.end}`)
+if (argv.start != null && argv.end != null) {
+  fetchTransferReport(argv.start, argv.end).then(report => {
+    console.log(report.toString())
+  })
 } else {
   console.log("Must specify start and end block")
 }
