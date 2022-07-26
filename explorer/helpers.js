@@ -1,4 +1,5 @@
 const TransferReportBuilder = require('./builder')
+const Web3 = require('web3')
 
 /**
  * Returns a new TransferReport
@@ -10,6 +11,12 @@ async function fetchTransferReport(startBlock, endBlock) {
   return builder.fromChain()
 }
 
+/** Adds two Wei values, represented as strings */
+function addWei(a, b) {
+  return Web3.utils.toBN(a).add(Web3.utils.toBN(b))
+}
+
 module.exports = {
-  fetchTransferReport
+  addWei,
+  fetchTransferReport,
 }

@@ -31,3 +31,26 @@ contract('calculation of ether transfer', (accounts) => {
     expect(report.totalEtherTransfer.toString()).to.equal(web3.utils.toWei('3'))
   })
 })
+
+contract('calculation of receiving addresses', (accounts) => {
+  it('should return an empty obj when there are no transactions', () => {
+    const report = new TransferReport([])
+    expect(report.receivingAddresses).to.be.empty
+  })
+
+  it('should return an obj with unique addresses and amounts transferred to them', async () => {
+    const transactions = await sendTransactions([
+      { from: accounts[0], to: accounts[1], value: web3.utils.toWei('1') },
+      { from: accounts[4], to: accounts[1], value: web3.utils.toWei('1') },
+      { from: accounts[2], to: accounts[0], value: web3.utils.toWei('1') },
+      { from: accounts[8], to: accounts[2], value: web3.utils.toWei('1') },
+    ])
+
+    const report = new TransferReport(transactions)
+    const addresses = report.receivingAddresses
+    expect(addresses[accounts[0]].toString()).to.equal(web3.utils.toWei('1'))
+    expect(addresses[accounts[1]].toString()).to.equal(web3.utils.toWei('2'))
+    expect(addresses[accounts[2]].toString()).to.equal(web3.utils.toWei('1'))
+    expect(Object.entries(addresses).length).to.equal(3)
+  })
+})
