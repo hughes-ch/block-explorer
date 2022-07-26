@@ -14,5 +14,6 @@ module.exports = {
     "space-before-function-paren": "off",
     "comma-dangle": "off",
     "require-jsdoc": "error"
-  }
+  },
+  ignorePatterns: ["*.test.js"],
 }

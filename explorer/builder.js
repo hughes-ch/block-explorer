@@ -1,5 +1,5 @@
-const ethers = require('ethers')
 const TransferReport = require('./report')
+const Web3 = require('web3')
 
 /** Fetches requested block information and builds a TransferReport */
 class TransferReportBuilder {
@@ -11,7 +11,7 @@ class TransferReportBuilder {
   constructor(startBlock, endBlock) {
     this.startBlock = startBlock
     this.endBlock = endBlock
-    this.provider = ethers.getDefaultProvider('http://127.0.0.1:7545')
+    this.provider = new Web3(Web3.givenProvider || 'ws://localhost:7545').eth
   }
 
   /** Creates a TransferReport by fetching data off of the chain */
@@ -24,7 +24,7 @@ class TransferReportBuilder {
   async getTransactions() {
     const blockPromises = []
     for (let blockNum = this.startBlock; blockNum <= this.endBlock; blockNum++) {
-      blockPromises.push(this.provider.getBlockWithTransactions(blockNum))
+      blockPromises.push(this.provider.getBlock(blockNum, true))
     }
 
     const blocks = await Promise.all(blockPromises)
