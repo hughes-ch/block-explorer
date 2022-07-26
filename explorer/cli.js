@@ -1,7 +1,17 @@
 #!/usr/bin/env node
+const TransferReportBuilder = require('./builder')
 const yargs = require('yargs/yargs')
 const { hideBin } = require('yargs/helpers')
-const { fetchTransferReport } = require('./helpers')
+
+/**
+ * Returns a new TransferReport
+ * @param {int} startBlock - Starting block of the report
+ * @param {int} endBlock - Ending block of the report (inclusive)
+ */
+async function fetchTransferReport(startBlock, endBlock) {
+  const builder = new TransferReportBuilder(startBlock, endBlock)
+  return builder.fromChain()
+}
 
 const argv = yargs(hideBin(process.argv))
   .options({

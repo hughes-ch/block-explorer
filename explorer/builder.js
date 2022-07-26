@@ -17,7 +17,7 @@ class TransferReportBuilder {
   /** Creates a TransferReport by fetching data off of the chain */
   async fromChain() {
     const transactions = await this.getTransactions()
-    return new TransferReport(this.provider, transactions)
+    return new TransferReport(transactions)
   }
 
   /** Gets a list of all transactions between start/end blocks */
