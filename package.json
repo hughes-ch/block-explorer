@@ -3,8 +3,6 @@
     "@openzeppelin/contracts": "^4.7.1",
     "bn": "^1.0.5",
     "eslint": "^8.0.1",
-    "ethers": "^5.6.9",
-    "truffle": "^5.5.23",
     "web3": "^1.7.4",
     "yargs": "^17.5.1"
   },
@@ -12,20 +10,18 @@
     "lint": "yarn run eslint explorer --fix",
     "test": "yarn run truffle test explorer/**.test.js"
   },
-  "name": "explorer",
+  "name": "@hughes-ch/block-explorer",
   "version": "1.0.0",
   "description": "A command line block explorer",
   "main": "index.js",
   "author": "hughes-ch <contact@chrishughesdev.com>",
   "license": "MIT",
   "devDependencies": {
-    "bn-chai": "^1.0.1",
     "chai": "^4.3.6",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-promise": "^6.0.0",
-    "ganache-core": "^2.13.2",
-    "jest": "^28.1.3"
+    "truffle": "^5.5.23"
   }
 }
