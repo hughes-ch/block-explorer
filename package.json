@@ -11,7 +11,7 @@
     "test": "yarn run truffle test explorer/**.test.js"
   },
   "name": "@hughes-ch/block-explorer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A command line block explorer",
   "main": "index.js",
   "bin": {
