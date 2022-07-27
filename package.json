@@ -11,9 +11,12 @@
     "test": "yarn run truffle test explorer/**.test.js"
   },
   "name": "@hughes-ch/block-explorer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A command line block explorer",
   "main": "index.js",
+  "bin": {
+    "explore": "explorer/cli.js"
+  },
   "author": "hughes-ch <contact@chrishughesdev.com>",
   "license": "MIT",
   "devDependencies": {
