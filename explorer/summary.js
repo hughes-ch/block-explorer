@@ -40,6 +40,10 @@ class TransactionSummary {
     const uniqueAddresses = Array.from(new Set(allAddresses.flat()))
     const isCodeAtAddress = await Promise.all(
       uniqueAddresses.map(async (address) => {
+        if (!address) {
+          return false
+        }
+
         const codeAtAddress = await this.provider.getCode(address)
         return codeAtAddress !== '0x'
       })
@@ -62,6 +66,10 @@ class TransactionSummary {
     const uniqueAddresses = new Set(addresses)
     const txAmounts = {}
     for (const address of uniqueAddresses) {
+      if (!address) {
+        continue
+      }
+
       const transactionsWithAddress = this.transactions.filter(
         tx => txAddressLookup(tx) === address
       )
