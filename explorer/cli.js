@@ -20,7 +20,7 @@ const argv = yargs(hideBin(process.argv))
     }
   })
   .check((argv, options) => {
-    if (!isNaN(argv.back)) {
+    if (!isNaN(argv.last)) {
       return true
     } else if (!isNaN(argv.start) && !isNaN(argv.end)) {
       return true
