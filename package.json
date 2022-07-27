@@ -11,7 +11,7 @@
     "test": "yarn run truffle test explorer/**.test.js"
   },
   "name": "@hughes-ch/block-explorer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A command line block explorer",
   "main": "index.js",
   "bin": {
@@ -28,7 +28,7 @@
     "truffle": "^5.5.23"
   },
   "homepage": "https://github.com/hughes-ch/block-explorer#readme",
-  "repository" : {
+  "repository": {
     "type": "git",
     "url": "https://github.com/hughes-ch/block-explorer.git"
   }
