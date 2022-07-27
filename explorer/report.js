@@ -16,8 +16,27 @@ class TransferReport {
   }
 
   /** Converts the object to an ASCII representation */
-  toString() {
-    return `Total Ether Transfer: ${this.totalEtherTransfer}`
+  async generateReport(provider) {
+    const txCount = this.transactionList.length
+    const ethTransferred = Web3.utils.fromWei(this.totalEtherTransfer)
+
+    const senders = this.sendingAddresses
+    const receivers = this.receivingAddresses
+    const contracts = await this.contractAddresses(provider)
+
+    const sendersStr = this.buildAccountListStr(senders, contracts)
+    const receiversStr = this.buildAccountListStr(receivers, contracts)
+
+    const template = `
+${txCount} transactions found for total of ${ethTransferred} ETH transferred.
+
+There were ${Object.keys(senders).length} senders:
+${sendersStr}
+
+... and ${Object.keys(receivers).length} receivers:
+${receiversStr}
+`
+    return template
   }
 
   /** Gets the total amount of ether transferred */
@@ -80,6 +99,24 @@ class TransferReport {
     }
 
     return txAmounts
+  }
+
+  /**
+   * Builds a string representing a list of accounts. Contracts are highlighted.
+   * @param {Object} accounts - Object representing accounts and ETH values
+   * @param {Array[String]} contractAddresses - Array of known contracts
+   */
+  buildAccountListStr(accounts, contractAddresses) {
+    const lines = Object.entries(accounts).map(([account, value]) => {
+      const contractIndicator = (
+        contractAddresses.includes(account) ? '(contract)' : ''
+      )
+
+      const ethValue = Web3.utils.fromWei(value)
+      return `\t${account}: ${ethValue} ETH ${contractIndicator}`
+    })
+
+    return lines.join('\n')
   }
 }
 
