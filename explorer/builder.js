@@ -1,41 +1,47 @@
 const TransferReport = require('./report')
-const Web3 = require('web3')
 
 /** Fetches requested block information and builds a TransferReport */
 class TransferReportBuilder {
   /**
    * Constructor
+   * @param {Web3.provider} provider - Web3 provider
+   */
+  constructor(provider) {
+    this.provider = provider
+  }
+
+  /**
+   * Creates a TransferReport by fetching data off of the chain
    * @param {int} startBlock - Starting block number
    * @param {int} endBlock - Ending block Number
    */
-  constructor(startBlock, endBlock) {
-    this.startBlock = startBlock
-    this.endBlock = endBlock
-    this.provider = new Web3(Web3.givenProvider || 'ws://localhost:7545').eth
-  }
+  async buildReport(startBlock, endBlock) {
+    const currentBlock = await this.provider.getBlockNumber()
+    if (startBlock > currentBlock) {
+      return new TransferReport([])
+    }
 
-  /** Creates a TransferReport by fetching data off of the chain */
-  async fromChain() {
-    const transactions = await this.getTransactions()
+    const cappedEndBlock = (endBlock > currentBlock) ? currentBlock : endBlock
+    const transactions = await this.getTransactions(startBlock, cappedEndBlock)
     return new TransferReport(transactions)
   }
 
-  /** Gets a list of all transactions between start/end blocks */
-  async getTransactions() {
+  /**
+   * Gets a list of all transactions between start/end blocks
+   * @param {int} startBlock - Starting block number
+   * @param {int} endBlock - Ending block Number
+   */
+  async getTransactions(startBlock, endBlock) {
     const blockPromises = []
-    for (let blockNum = this.startBlock; blockNum <= this.endBlock; blockNum++) {
+    console.log(`Start: ${startBlock}`)
+    console.log(`End: ${endBlock}`)
+    for (let blockNum = startBlock; blockNum <= endBlock; blockNum++) {
       blockPromises.push(this.provider.getBlock(blockNum, true))
     }
 
     const blocks = await Promise.all(blockPromises)
-    const transactions = []
-    for (const block of blocks) {
-      if (block) {
-        transactions.concat(block.transactions)
-      }
-    }
-
-    return transactions
+    const transactions = blocks.map(block => block.transactions)
+    return transactions.flat()
   }
 }
 

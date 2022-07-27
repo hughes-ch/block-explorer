@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const TransferReportBuilder = require('./builder')
+const Web3 = require('web3')
 const yargs = require('yargs/yargs')
 const { hideBin } = require('yargs/helpers')
 
@@ -9,8 +10,9 @@ const { hideBin } = require('yargs/helpers')
  * @param {int} endBlock - Ending block of the report (inclusive)
  */
 async function fetchTransferReport(startBlock, endBlock) {
-  const builder = new TransferReportBuilder(startBlock, endBlock)
-  return builder.fromChain()
+  const web3 = new Web3(Web3.givenProvider || 'ws://localhost:7545')
+  const builder = new TransferReportBuilder(web3.eth)
+  return builder.buildReport(startBlock, endBlock)
 }
 
 const argv = yargs(hideBin(process.argv))
