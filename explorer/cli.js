@@ -26,10 +26,10 @@ const argv = yargs(hideBin(process.argv))
   })
   .argv
 
-if (argv.start != null && argv.end != null) {
+if (isNaN(argv.start) || isNaN(argv.end)) {
+  console.log('Must specify start and end block')
+} else {
   fetchTransferReport(argv.start, argv.end).then(report => {
     console.log(report.toString())
   })
-} else {
-  console.log('Must specify start and end block')
 }
