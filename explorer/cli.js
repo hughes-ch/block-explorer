@@ -13,16 +13,25 @@ const argv = yargs(hideBin(process.argv))
     end: {
       alias: 'e',
       describe: 'Ending block of explorer (inclusive)'
+    },
+    last: {
+      alias: 'l',
+      describe: 'Explore a specified number of blocks from the end'
+    }
+  })
+  .check((argv, options) => {
+    if (!isNaN(argv.back)) {
+      return true
+    } else if (!isNaN(argv.start) && !isNaN(argv.end)) {
+      return true
+    } else {
+      throw new Error('A start and stop block must be specified')
     }
   })
   .argv
 
-if (isNaN(argv.start) || isNaN(argv.end)) {
-  console.log('Must specify start and end block')
-} else {
-  new Web3Provider().run(async (provider) => {
-    const builder = new TransferReportBuilder(provider)
-    const report = await builder.buildReport(argv.start, argv.end)
-    console.log(await report.toString())
-  })
-}
+new Web3Provider().run(async (provider) => {
+  const builder = new TransferReportBuilder(provider)
+  const report = await builder.buildReport(argv)
+  console.log(await report.toString())
+})
