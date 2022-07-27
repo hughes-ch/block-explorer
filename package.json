@@ -6,7 +6,7 @@
     "yargs": "^17.5.1"
   },
   "scripts": {
-    "lint": "yarn exec eslint explorer --fix",
+    "lint": "yarn run eslint explorer --fix",
     "test": "scripts/test.sh"
   },
   "name": "@hughes-ch/block-explorer",
