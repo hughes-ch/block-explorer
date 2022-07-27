@@ -2,12 +2,11 @@
   "dependencies": {
     "bn": "^1.0.5",
     "dotenv": "^16.0.1",
-    "eslint": "^8.20.0",
     "web3": "^1.7.4",
     "yargs": "^17.5.1"
   },
   "scripts": {
-    "lint": "yarn run eslint explorer --fix",
+    "lint": "yarn exec eslint explorer --fix",
     "test": "scripts/test.sh"
   },
   "name": "@hughes-ch/block-explorer",
@@ -21,6 +20,7 @@
   "license": "MIT",
   "devDependencies": {
     "@openzeppelin/contracts": "^4.7.1",
+    "eslint": "^8.20.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-n": "^15.0.0",
