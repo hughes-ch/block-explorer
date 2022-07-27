@@ -33,8 +33,6 @@ class TransferReportBuilder {
    */
   async getTransactions(startBlock, endBlock) {
     const blockPromises = []
-    console.log(`Start: ${startBlock}`)
-    console.log(`End: ${endBlock}`)
     for (let blockNum = startBlock; blockNum <= endBlock; blockNum++) {
       blockPromises.push(this.provider.getBlock(blockNum, true))
     }
