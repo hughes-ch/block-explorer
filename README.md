@@ -47,14 +47,16 @@ This project uses the yarn package manager. To install a local copy, first pull 
 yarn install
 ```
 
-To run local testing, a instance of Ganache must be running on the local machine on port 7545. Running unit tests can be done with:
+Running unit tests can be done with:
 ```
 yarn test
 ```
+During unit testing, a local ganache-cli instance will be spun up for the duration of the unit test.
 
 To run the full command line tool with the local changes, type:
 ```
 explorer/cli.js <args>
 ```
+By default, this will attempt to connect to an Infura Ethereum node. There are several environment variables that need to be set before this works correctly. They can be set in a `.env` file at the root of this repo and are automatically loaded by `dotenv` on start. See `example.env` for more details. 
 
 Before pushing, make sure to run `yarn lint` to ensure code style matches.

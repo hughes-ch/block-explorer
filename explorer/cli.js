@@ -4,6 +4,8 @@ const Web3Provider = require('./provider')
 const yargs = require('yargs/yargs')
 const { hideBin } = require('yargs/helpers')
 
+require('dotenv').config()
+
 const argv = yargs(hideBin(process.argv))
   .options({
     start: {

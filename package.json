@@ -1,14 +1,13 @@
 {
   "dependencies": {
-    "@openzeppelin/contracts": "^4.7.1",
     "bn": "^1.0.5",
-    "eslint": "^8.0.1",
+    "dotenv": "^16.0.1",
     "web3": "^1.7.4",
     "yargs": "^17.5.1"
   },
   "scripts": {
     "lint": "yarn run eslint explorer --fix",
-    "test": "yarn run truffle test explorer/**.test.js"
+    "test": "scripts/test.sh"
   },
   "name": "@hughes-ch/block-explorer",
   "version": "1.0.3",
@@ -20,11 +19,13 @@
   "author": "hughes-ch <contact@chrishughesdev.com>",
   "license": "MIT",
   "devDependencies": {
-    "chai": "^4.3.6",
+    "@openzeppelin/contracts": "^4.7.1",
+    "eslint": "^8.0.1",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-promise": "^6.0.0",
+    "ganache-cli": "^6.12.2",
     "truffle": "^5.5.23"
   },
   "homepage": "https://github.com/hughes-ch/block-explorer#readme",
