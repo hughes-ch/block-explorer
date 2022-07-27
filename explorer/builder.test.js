@@ -5,7 +5,7 @@ contract('the transfer report builder', (accounts) => {
   it('creates an empty TransferReport when there are no transactions', async () => {
     const builder = new TransferReportBuilder(web3.eth)
     const report = await builder.buildReport(0, 0)
-    expect(report.transactionList).to.be.empty
+    expect(report.summary.transactions).to.be.empty
   })
 
   it('creates an empty TransferReport when given invalid starting block', async () => {
@@ -22,7 +22,7 @@ contract('the transfer report builder', (accounts) => {
       currentBlockNum + 15
     )
 
-    expect(report.transactionList).to.be.empty
+    expect(report.summary.transactions).to.be.empty
   })
 
   it('creates TransferReport with list of all transactions in a block', async () => {
@@ -39,7 +39,7 @@ contract('the transfer report builder', (accounts) => {
       currentBlockNum
     )
 
-    expect(report.transactionList.length).to.equal(3)
+    expect(report.summary.transactions.length).to.equal(3)
   })
 
   it('can handle invalid ending block', async () => {
@@ -56,6 +56,6 @@ contract('the transfer report builder', (accounts) => {
       currentBlockNum + 15,
     )
 
-    expect(report.transactionList.length).to.equal(3)
+    expect(report.summary.transactions.length).to.equal(3)
   })
 })

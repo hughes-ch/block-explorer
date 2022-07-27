@@ -1,3 +1,4 @@
+const TransactionSummary = require('./summary')
 const TransferReport = require('./report')
 
 /** Fetches requested block information and builds a TransferReport */
@@ -17,13 +18,17 @@ class TransferReportBuilder {
    */
   async buildReport(startBlock, endBlock) {
     const currentBlock = await this.provider.getBlockNumber()
+    const cappedEndBlock = (endBlock > currentBlock) ? currentBlock : endBlock
+
+    let transactions
     if (startBlock > currentBlock) {
-      return new TransferReport([])
+      transactions = []
+    } else {
+      transactions = await this.getTransactions(startBlock, cappedEndBlock)
     }
 
-    const cappedEndBlock = (endBlock > currentBlock) ? currentBlock : endBlock
-    const transactions = await this.getTransactions(startBlock, cappedEndBlock)
-    return new TransferReport(transactions)
+    const summary = new TransactionSummary(transactions, this.provider)
+    return new TransferReport(summary)
   }
 
   /**

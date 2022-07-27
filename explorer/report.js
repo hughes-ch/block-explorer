@@ -1,4 +1,3 @@
-const { addWei } = require('./helpers')
 const Web3 = require('web3')
 
 /**
@@ -9,26 +8,27 @@ const Web3 = require('web3')
 class TransferReport {
   /**
    * Constructor
-   * @param {Array[Transaction]} transactionList - An array of Transactions
+   * @param {TransactionSummary} summary - TransactionSummary instance to report
    */
-  constructor(transactionList) {
-    this.transactionList = transactionList
+  constructor(summary) {
+    this.summary = summary
   }
 
   /** Converts the object to an ASCII representation */
-  async generateReport(provider) {
-    const txCount = this.transactionList.length
-    const ethTransferred = Web3.utils.fromWei(this.totalEtherTransfer)
+  async toString() {
+    const txCount = this.summary.transactions.length
+    const trailingS = txCount === 1 ? '' : 's'
+    const ethTransferred = Web3.utils.fromWei(this.summary.totalEtherTransfer)
 
-    const senders = this.sendingAddresses
-    const receivers = this.receivingAddresses
-    const contracts = await this.contractAddresses(provider)
+    const senders = this.summary.sendingAddresses
+    const receivers = this.summary.receivingAddresses
+    const contracts = await this.summary.contractAddresses()
 
     const sendersStr = this.buildAccountListStr(senders, contracts)
     const receiversStr = this.buildAccountListStr(receivers, contracts)
 
     const template = `
-${txCount} transactions found for total of ${ethTransferred} ETH transferred.
+${txCount} transaction${trailingS} found for total of ${ethTransferred} ETH transferred.
 
 There were ${Object.keys(senders).length} senders:
 ${sendersStr}
@@ -37,68 +37,6 @@ ${sendersStr}
 ${receiversStr}
 `
     return template
-  }
-
-  /** Gets the total amount of ether transferred */
-  get totalEtherTransfer() {
-    return this.transactionList.reduce(
-      this.reduceTransactions, Web3.utils.toBN(0)
-    )
-  }
-
-  /** Gets the receiving addresses and how much they received */
-  get receivingAddresses() {
-    const txAddressLookup = tx => tx.to
-    return this.txAmountPerAddress(txAddressLookup)
-  }
-
-  /** Gets the sending addresses and how much they received */
-  get sendingAddresses() {
-    const txAddressLookup = tx => tx.from
-    return this.txAmountPerAddress(txAddressLookup)
-  }
-
-  /**
-   * Gets a list of contract addresses involved in the transactions
-   * @param {Web3.provider} provider - Web3 ether provider
-   */
-  async contractAddresses(provider) {
-    const allAddresses = this.transactionList.map(tx => [tx.to, tx.from])
-    const uniqueAddresses = Array.from(new Set(allAddresses.flat()))
-    const isCodeAtAddress = await Promise.all(
-      uniqueAddresses.map(async (address) => {
-        const codeAtAddress = await provider.getCode(address)
-        return codeAtAddress !== '0x'
-      })
-    )
-
-    return uniqueAddresses.filter((_, idx) => isCodeAtAddress[idx])
-  }
-
-  /** Reduces transactions to the sum of their values */
-  reduceTransactions(prev, curr) {
-    return addWei(prev, curr.value)
-  }
-
-  /**
-   * Finds the amount of transactions for each address
-   * @param {Function} txAddressLookup - Outputs an address for a transaction
-   */
-  txAmountPerAddress(txAddressLookup) {
-    const addresses = this.transactionList.map(tx => txAddressLookup(tx))
-    const uniqueAddresses = new Set(addresses)
-    const txAmounts = {}
-    for (const address of uniqueAddresses) {
-      const transactionsWithAddress = this.transactionList.filter(
-        tx => txAddressLookup(tx) === address
-      )
-
-      txAmounts[address] = transactionsWithAddress.reduce(
-        this.reduceTransactions, Web3.utils.toBN(0)
-      )
-    }
-
-    return txAmounts
   }
 
   /**

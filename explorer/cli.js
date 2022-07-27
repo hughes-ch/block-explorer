@@ -23,6 +23,6 @@ if (isNaN(argv.start) || isNaN(argv.end)) {
   new Web3Provider().run(async (provider) => {
     const builder = new TransferReportBuilder(provider)
     const report = await builder.buildReport(argv.start, argv.end)
-    console.log(await report.toString(provider))
+    console.log(await report.toString())
   })
 }
